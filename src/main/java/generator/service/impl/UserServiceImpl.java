@@ -17,8 +17,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
     @Autowired
     private UserMapper userMapper;
     @Override
-    public List<User> USER_LIST() {
-        return userMapper.userList();
+    public List<User> USER_LIST(int m,int n) {
+        return userMapper.userList(m,n);
     }
 
     @Override
@@ -37,8 +37,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
     }
 
     @Override
+    public void M_update(User user) {
+        userMapper.updateUser_Manager(user);
+    }
+
+    @Override
     public void delete(int id) {
         userMapper.deleteUser(id);
+    }
+
+    @Override
+    public User check(String n) {
+       return userMapper.checkName(n);
     }
 }
 
