@@ -1,10 +1,10 @@
-package generator.entity;
+package generator.util;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
 public class md5 {
-    public static String getMD5String(String str) {
+    public static String getMD5String(String str) throws Exception {
         try {
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -15,7 +15,6 @@ public class md5 {
             //一个byte是八位二进制，也就是2位十六进制字符（2的8次方等于16的2次方）
             return new BigInteger(1, md.digest()).toString(16);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

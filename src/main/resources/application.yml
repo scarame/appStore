@@ -7,7 +7,7 @@ spring:
     suffix: .html
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/user?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/app_store?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
     #    数据库连接池初始化连接数
@@ -31,11 +31,31 @@ spring:
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
-mybatis:
-  # dao包
-  type-aliases-package:  person.xlj.boke.mapper.ArticleMapper
-  # sql语句文件所在路径
-  mapper-locations: classpath:/mybatis-mappers/*
-  configuration:
-    mapUnderscoreToCamelCase: true
+  mybatis:
+    # dao包
+    type-aliases-package:  person.xlj.boke.mapper.ArticleMapper
+    # sql语句文件所在路径
+    mapper-locations: classpath:/mybatis-mappers/*
+    configuration:
+      mapUnderscoreToCamelCase: true
+      # mybatis日志打印
+      #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #redis连接配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 15
+    timeout: 10000
 
+    lettuce:
+      pool:
+        max-idle: 30
+        max-active: 8
+        max-wait: 10000
+        max-total: 10000
+
+
+  #  logging: 日志
+  #  level:
+  #    generator.mapper: trace

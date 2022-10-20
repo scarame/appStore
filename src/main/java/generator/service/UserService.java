@@ -1,19 +1,21 @@
 package generator.service;
 
-import generator.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import generator.entity.User;
 import java.util.List;
 
 /**
  *
  */
 public interface UserService extends IService<User> {
-    List<User> USER_LIST(int m,int n);
-    void   register(User user);
-    User login(User user);
-    void  update(User user);
-    void  M_update(User user);
-    void delete(int id);
-    User  check(String n);
+    User login(String account,String passWord);
+    void register(String account,String passWord);
+    boolean is_repeated(String account);
+
+    int update_general(User user);
+    int update_managerial(User user,String menderAccount);
+    List<User> userList(int pages,int rows);
+    int delete(int id);
+
 }
