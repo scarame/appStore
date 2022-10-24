@@ -30,15 +30,16 @@ public interface UserMapper extends BaseMapper<User> {
     int userDelete(int id);
     //===更改信息====
     //普通用户
-    @Update("update user set user_photo=#{user_photo},user_name=#{user_name},account=#{account},password=#{password}," +
-            "email=#{email},mobile=#{mobile},birthday=#{birthday},sex=#{sex}," +
-            "update_by=#{account},update_date=#{update_date} where id=#{id}")
+    @Update("update user set user_photo=#{user.user_photo},user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
+            "email=#{user.email},mobile=#{user.mobile},birthday=#{user.birthday},sex=#{user.sex}," +
+            "update_by=#{user.account},update_date=#{date} where id=#{user.id}")
     int update_general(User user,String date);
     //管理者
-    @Update("update user set user_photo=#{user_photo},user_name=#{user_name},account=#{account},password=#{password}," +
-            "email=#{email},mobile=#{mobile},birthday=#{birthday},sex=#{sex}," +
-            "update_by=#{menderAccount},update_date=#{update_date} where id=#{id}")
-    int update_managerial(User user,String menderAccount,String date);
+    @Update("update user set user_photo=#{user.user_photo},user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
+            "email=#{user.email},mobile=#{user.mobile},birthday=#{user.birthday},sex=#{user.sex},user_type_id=#{user.user_type_id},status=#{user.status}," +
+            "update_by=#{menderAccount},update_date=#{date} where id=#{user.id}")
+    int update_managerial(@Param("user") User user,String menderAccount,String date);
+
 }
 
 

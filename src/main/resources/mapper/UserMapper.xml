@@ -6,21 +6,21 @@
 
     <resultMap id="BaseResultMap" type="generator.entity.User">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="userPhoto" column="user_photo" jdbcType="VARCHAR"/>
-            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="user_photo" column="user_photo" jdbcType="VARCHAR"/>
+            <result property="user_name" column="user_name" jdbcType="VARCHAR"/>
             <result property="account" column="account" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="orgId" column="org_id" jdbcType="TINYINT"/>
+            <result property="org_id" column="org_id" jdbcType="TINYINT"/>
             <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="birthday" column="birthday" jdbcType="DATE"/>
             <result property="sex" column="sex" jdbcType="VARCHAR"/>
-            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
-            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
-            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
+            <result property="create_date" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>
+            <result property="update_date" column="update_date" jdbcType="TIMESTAMP"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="userTypeId" column="user_type_id" jdbcType="TINYINT"/>
+            <result property="user_type_id" column="user_type_id" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">

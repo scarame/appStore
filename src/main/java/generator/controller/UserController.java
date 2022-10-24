@@ -2,11 +2,12 @@ package generator.controller;
 
 
 import generator.entity.Res;
-
 import generator.entity.User;
+import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import generator.util.md5;
 import generator.service.UserService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +34,9 @@ public class UserController {
     public Res<List<User>>  UserList( int pages, int rows) {
            try {
                List<User> users=  userServiceImpl.userList(pages,rows);
-               return Res.success("查询成功！",true,users);
+               return Res.success("query successfully",true,users);
            }catch (Exception e){
-               return Res.fail("缺少参数");
+               return Res.fail("missing parameter");
            }
     }
     //-----------------用注册---------------
@@ -43,35 +44,52 @@ public class UserController {
     public Res Register(String account , String password){
         try {
             if(account.trim().equals("")||password.trim().equals("")){
-                return Res.fail("用户属性不能为空");
+                return Res.fail("missing parameter");
             }else if(userServiceImpl.is_repeated(account)){
-                return Res.fail("该账户已注册");
+                return Res.fail("the account has been registered");
             }
             userServiceImpl.register(account,md5.getMD5String(password));
         } catch (Exception e) {
-            return Res.fail("缺少用户参数");
+            return Res.fail("missing parameter");
         }
 
-       return Res.success("注册成功",true);
+       return Res.success("registered successfully",true);
     }
     //-----------------信息修改---------------
     @PostMapping("update")
     public Res<Object> update(User user) throws Exception{
-        if(userServiceImpl.update_general(user)>=1){
-            return Res.success("修改完成",true);
+        try{
+            if(userServiceImpl.update_general(user)>=1){
+                return Res.success("update completed",true);
+            }
+        }catch (Exception e){
+            return Res.fail("missing parameter");
         }
        return Res.fail("update fail");
     }
     @PostMapping("managerUpdate")
-    public Res<Object> managerUpdate(HttpServletRequest request,User user) throws Exception{
+    public Res<Object> managerUpdate(HttpServletRequest request,User user){
        String token=request.getHeader("token");
-        userServiceImpl.update_managerial(user,(String) JwtUtil.parseJWT(token).get("account"));
-        return Res.success("修改完成",true);
+       String account=(String) JwtUtil.parseJWT(token).get("account");
+       try{
+           if(userServiceImpl.update_managerial(user,account)>=1){
+               return Res.success("update completed",true);
+           }
+       }catch (Exception e){
+           return Res.fail("missing parameter");
+       }
+        return Res.fail("update fail");
     }
     //-----------------删除用户---------------
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public Res<Object> deleteUser(int id){
-        userServiceImpl.delete(id);
-        return Res.success("用户删除成功！",true);
+        try {
+            if(userServiceImpl.delete(id)>=1){
+                return Res.success("successfully delete",true);
+            }
+        }catch (Exception e){
+            Res.success("missing parameter",true);
+        }
+        return Res.success("fail to delete",true);
     }
  }
