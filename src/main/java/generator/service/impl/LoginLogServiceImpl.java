@@ -8,12 +8,9 @@ import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import generator.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 /**
  *

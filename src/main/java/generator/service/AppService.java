@@ -1,15 +1,22 @@
 package generator.service;
 
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import generator.entity.App;
-import generator.entity.User;
 
+import java.util.List;
+
+;
 
 /**
  *
  */
 public interface AppService extends IService<App> {
-    User login(String account, String passWord);
-    void register(String account,String passWord);
+    //显示产品
+    List<App> appList(int pages,int rows);
+    //关键字查找
+    List<App>  findByName (String appName);
+    //类别查找
+    List<App>  findByType (String appType);
+    //状态修改
+    int updateApp (App app);
 }
