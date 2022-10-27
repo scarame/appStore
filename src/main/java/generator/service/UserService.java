@@ -13,8 +13,10 @@ public interface UserService extends IService<User> {
     void register(String account,String passWord);
     boolean is_repeated(String account);
 
-    int update_general(User user);
+    int update_general(User user) throws Exception;
     int update_managerial(User user,String menderAccount);
+    int uploadPortrait(String url,int id);
+    String getPortrait(int id);
     List<User> userList(int pages,int rows);
     int delete(int id);
 

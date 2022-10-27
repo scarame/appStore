@@ -110,5 +110,8 @@ public class RequestUtil {
 
         return os ;
     }
+    public static String getParseTokenAttributes(String token ,String AttributesName){
+        return (String)JwtUtil.parseJWT(CONSTANT.TOKEN_KEY).get(AttributesName);
+    }
 
 }

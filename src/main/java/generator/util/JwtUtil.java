@@ -20,7 +20,7 @@ public class JwtUtil {
      * @param user      登录成功的user对象
      * @return
      */
-    public static String createJWT(User user, String ip,int logIndex) throws Exception {
+    public static String createJWT(User user, String ip,int logIndex) {
         //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 

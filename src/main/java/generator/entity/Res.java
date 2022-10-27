@@ -11,8 +11,8 @@ public class Res<T> {
     public static  <T> Res<T> success(T data){
         return new Res<T>(data);
     }
-    public static  <T> Res<T> success(String msg,Boolean b,T data){
-        return new Res<T>(msg,b,data);
+    public static  <A> Res<A> success(String msg,Boolean b,A data){
+        return new Res<A>(msg,b,data);
     }
     public static  <T> Res<T> success(String msg,Boolean b){
         return new Res<T>(msg,b);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.AppMapper">
+
+    <resultMap id="BaseResultMap" type="generator.entity.App">
+            <id property="appid" column="appID" jdbcType="INTEGER"/>
+            <result property="appurl" column="appUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        appID,appUrl
+    </sql>
+</mapper>

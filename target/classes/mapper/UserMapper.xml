@@ -1,0 +1,34 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="generator.mapper.UserMapper">-->
+
+<!--    <resultMap id="BaseResultMap" type="generator.entity.User">-->
+<!--            <id property="id" column="id" jdbcType="INTEGER"/>-->
+<!--            <result property="user_photo" column="user_photo" jdbcType="VARCHAR"/>-->
+<!--            <result property="user_name" column="user_name" jdbcType="VARCHAR"/>-->
+<!--            <result property="account" column="account" jdbcType="VARCHAR"/>-->
+<!--            <result property="password" column="password" jdbcType="VARCHAR"/>-->
+<!--            <result property="org_id" column="org_id" jdbcType="TINYINT"/>-->
+<!--            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>-->
+<!--            <result property="email" column="email" jdbcType="VARCHAR"/>-->
+<!--            <result property="birthday" column="birthday" jdbcType="DATE"/>-->
+<!--            <result property="sex" column="sex" jdbcType="VARCHAR"/>-->
+<!--            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>-->
+<!--            <result property="create_date" column="create_date" jdbcType="TIMESTAMP"/>-->
+<!--            <result property="update_by" column="update_by" jdbcType="VARCHAR"/>-->
+<!--            <result property="update_date" column="update_date" jdbcType="TIMESTAMP"/>-->
+<!--            <result property="status" column="status" jdbcType="TINYINT"/>-->
+<!--            <result property="user_type_id" column="user_type_id" jdbcType="TINYINT"/>-->
+<!--    </resultMap>-->
+
+<!--    <sql id="Base_Column_List">-->
+<!--        id,user_photo,user_name,-->
+<!--        account,password,org_id,-->
+<!--        mobile,email,birthday,-->
+<!--        sex,create_by,create_date,-->
+<!--        update_by,update_date,status,-->
+<!--        user_type_id-->
+<!--    </sql>-->
+<!--</mapper>-->

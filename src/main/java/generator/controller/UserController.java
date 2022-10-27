@@ -3,18 +3,18 @@ package generator.controller;
 
 import generator.entity.Res;
 import generator.entity.User;
-import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import generator.util.md5;
 import generator.service.UserService;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 
@@ -23,72 +23,79 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userServiceImpl;
-    @Autowired
-    private RedisTemplate redisTemplate;
 
-
-
+    @ResponseBody
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++API+++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // 通过异常处理器方法统一返回响应结果
+    @ExceptionHandler(Exception.class)
+    public Res handleException(Exception E){
+        return Res.fail(E.getMessage());
+    }
+    @PostMapping("uploadPortrait")
+    public Res uploadPortrait(@RequestParam("portrait") MultipartFile fileUpload,HttpServletRequest request) throws Exception{
+        //获取文件名
+        int uID=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
+        String fileName = "userPortrait_"+uID+".png";
+        String tmpFilePath =  "C://Users//acer//Desktop//picture"  ;
+        String resourcesPath = tmpFilePath + "//" + fileName;
+        File upFile = new File(resourcesPath);
+        fileUpload.transferTo(upFile);
+        userServiceImpl.uploadPortrait(resourcesPath,uID);
+        return Res.success("upload successfully");
+    }
+    @PostMapping("getPortrait")
+    public String getPortrait (HttpServletResponse response,HttpServletRequest request) throws Exception{
+        int uid =(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
+        File file = new File(userServiceImpl.getPortrait(uid));
+        byte[] bytes = new byte[1024];
+
+        OutputStream os = response.getOutputStream();
+        FileInputStream fis = new FileInputStream(file);
+        while ((fis.read(bytes)) != -1) {
+            os.write(bytes);
+            os.flush();
+        }
+        return "success";
+    }
     //-----------------用户列表查询---------------
-    @RequestMapping("list")
+    @PostMapping("list")
     public Res<List<User>>  UserList( int pages, int rows) {
-           try {
-               List<User> users=  userServiceImpl.userList(pages,rows);
-               return Res.success("query successfully",true,users);
-           }catch (Exception e){
-               return Res.fail("missing parameter");
-           }
+        List<User> users=  userServiceImpl.userList(pages,rows);
+        return Res.success("query successfully",true,users);
     }
     //-----------------用注册---------------
     @PostMapping("register")
     public Res Register(String account , String password){
-        try {
-            if(account.trim().equals("")||password.trim().equals("")){
-                return Res.fail("missing parameter");
-            }else if(userServiceImpl.is_repeated(account)){
-                return Res.fail("the account has been registered");
-            }
-            userServiceImpl.register(account,md5.getMD5String(password));
-        } catch (Exception e) {
+        if(account.trim().equals("")||password.trim().equals("")){
             return Res.fail("missing parameter");
+        }else if(userServiceImpl.is_repeated(account)){
+            return Res.fail("the account has been registered");
         }
-
-       return Res.success("registered successfully",true);
+        userServiceImpl.register(account,md5.getMD5String(password));
+        return Res.success("registered successfully",true);
     }
     //-----------------信息修改---------------
     @PostMapping("update")
     public Res<Object> update(User user) throws Exception{
-        try{
-            if(userServiceImpl.update_general(user)>=1){
-                return Res.success("update completed",true);
-            }
-        }catch (Exception e){
-            return Res.fail("missing parameter");
+        if(userServiceImpl.update_general(user)>=1){
+            return Res.success("update completed",true);
         }
        return Res.fail("update fail");
     }
     @PostMapping("managerUpdate")
     public Res<Object> managerUpdate(HttpServletRequest request,User user){
-       String token=request.getHeader("token");
-       String account=(String) JwtUtil.parseJWT(token).get("account");
-       try{
-           if(userServiceImpl.update_managerial(user,account)>=1){
-               return Res.success("update completed",true);
-           }
-       }catch (Exception e){
-           return Res.fail("missing parameter");
-       }
-        return Res.fail("update fail");
+        String token=request.getHeader("token");
+        String account=(String) JwtUtil.parseJWT(token).get("account");
+        if(userServiceImpl.update_managerial(user,account)>=1){
+           return Res.success("update completed",true);
+        }
+       return Res.fail("update fail");
     }
     //-----------------删除用户---------------
     @PostMapping("delete")
     public Res<Object> deleteUser(int id){
-        try {
-            if(userServiceImpl.delete(id)>=1){
-                return Res.success("successfully delete",true);
-            }
-        }catch (Exception e){
-            Res.success("missing parameter",true);
+        if(userServiceImpl.delete(id)>=1){
+            return Res.success("successfully delete",true);
         }
         return Res.success("fail to delete",true);
     }

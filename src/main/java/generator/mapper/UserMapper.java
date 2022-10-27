@@ -30,16 +30,21 @@ public interface UserMapper extends BaseMapper<User> {
     int userDelete(int id);
     //===更改信息====
     //普通用户
-    @Update("update user set user_photo=#{user.user_photo},user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
+    @Update("update user set user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
             "email=#{user.email},mobile=#{user.mobile},birthday=#{user.birthday},sex=#{user.sex}," +
             "update_by=#{user.account},update_date=#{date} where id=#{user.id}")
     int update_general(User user,String date);
     //管理者
-    @Update("update user set user_photo=#{user.user_photo},user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
+    @Update("update user set user_name=#{user.user_name},account=#{user.account},password=#{user.password}," +
             "email=#{user.email},mobile=#{user.mobile},birthday=#{user.birthday},sex=#{user.sex},user_type_id=#{user.user_type_id},status=#{user.status}," +
             "update_by=#{menderAccount},update_date=#{date} where id=#{user.id}")
     int update_managerial(@Param("user") User user,String menderAccount,String date);
-
+    //储存头像路径
+    @Update("update user set user_photo=#{url} where id=#{id}")
+    int updatePhoto(String url,int id);
+    //获取头像路径
+    @Select("select user_photo from user where id=#{id}")
+    String getPhoto(int id);
 }
 
 
