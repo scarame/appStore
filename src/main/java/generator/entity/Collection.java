@@ -24,12 +24,12 @@ public class Collection implements Serializable {
     /**
      * 
      */
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 
      */
-    private Integer appId;
+    private Integer app_id;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -47,8 +47,8 @@ public class Collection implements Serializable {
         }
         generator.entity.Collection other = (generator.entity.Collection) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getAppId() == null ? other.getAppId() == null : this.getAppId().equals(other.getAppId()));
+            && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
+            && (this.getApp_id() == null ? other.getApp_id() == null : this.getApp_id().equals(other.getApp_id()));
     }
 
     @Override
@@ -56,22 +56,22 @@ public class Collection implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getAppId() == null) ? 0 : getAppId().hashCode());
+        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
+        result = prime * result + ((getApp_id() == null) ? 0 : getApp_id().hashCode());
         return result;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", appId=").append(appId);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(getClass().getSimpleName());
+//        sb.append(" [");
+//        sb.append("Hash = ").append(hashCode());
+//        sb.append(", id=").append(id);
+//        sb.append(", userId=").append(userId);
+//        sb.append(", appId=").append(appId);
+//        sb.append(", serialVersionUID=").append(serialVersionUID);
+//        sb.append("]");
+//        return sb.toString();
+//    }
 }

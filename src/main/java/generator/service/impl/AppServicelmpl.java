@@ -30,9 +30,12 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     public List<App> findByType(String appType) {
         return mapper.findByType(appType);
     }
-
     @Override
     public int updateApp(App app) {
         return mapper.UpdateApp(app);
+    }
+    @Override
+    public String getAppUrl(int appId) {
+        return mapper.getAppUrl(appId);
     }
 }

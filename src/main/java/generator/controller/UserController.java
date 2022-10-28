@@ -1,8 +1,10 @@
 package generator.controller;
 
 
+import generator.entity.Collection;
 import generator.entity.Res;
 import generator.entity.User;
+import generator.service.CollectionService;
 import generator.util.JwtUtil;
 import generator.util.md5;
 import generator.service.UserService;
@@ -23,7 +25,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userServiceImpl;
-
+    @Autowired
+    private CollectionService collectionService;
     @ResponseBody
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++API+++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 通过异常处理器方法统一返回响应结果
@@ -99,4 +102,12 @@ public class UserController {
         }
         return Res.success("fail to delete",true);
     }
+    @PostMapping("collectedAppList")
+    public Object appList(HttpServletRequest request) {
+        int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
+        List<Collection> list = collectionService.collectedList(uid);
+
+        return Res.success("查询成功", list);
+    }
+
  }

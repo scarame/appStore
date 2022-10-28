@@ -20,9 +20,9 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
     CollectionMapper collectionMapper;
 
     @Override
-    public int collect( Collection collection) {
-     if(collectionMapper.repeatedDownload(collection.getAppId())==null){
-         collectionMapper.collect(collection);
+    public int collect(int userId,int appId) {
+     if(collectionMapper.repeatedDownload(appId)==null){
+         collectionMapper.collect(userId,appId);
             return 1;
      }else{
          return 2;

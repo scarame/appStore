@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface CollectionMapper extends BaseMapper<Collection> {
     @Insert("insert into collection (user_id,app_id) values(#{userId},#{appId})")
-    int collect(Collection game);
+    int collect(int userId,int appId);
 
     @Select("select * from collection where app_id=#{appId}")
     Collection repeatedDownload(int appId);

@@ -19,4 +19,6 @@ public interface AppService extends IService<App> {
     List<App>  findByType (String appType);
     //状态修改
     int updateApp (App app);
+    //app下载
+    String getAppUrl(int  appId);
 }

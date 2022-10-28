@@ -12,7 +12,7 @@ public interface CollectionService extends IService<Collection> {
 
 
     //插入历史
-    int collect(Collection game);
+    int collect(int userId,int appId);
     //显示下载历史
     List<Collection> collectedList(int uid);
 }
