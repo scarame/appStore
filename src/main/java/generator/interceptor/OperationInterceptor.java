@@ -16,16 +16,16 @@ public class OperationInterceptor implements HandlerInterceptor {
     @Autowired
     private RedisTemplate redisTemplate;
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         try {
             String token= request.getHeader("token");
             int type=(int)JwtUtil.parseJWT(token).get("userType");
+            System.out.println(type);
             if(type>=2){
                 return true;
             }
-        }catch (Exception e){
-            return false;
-        }
+        }catch (Exception e){}
+        response.setStatus(401);
         return false;
     }
 }

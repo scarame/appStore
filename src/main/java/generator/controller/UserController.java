@@ -27,11 +27,14 @@ public class UserController {
     private UserService userServiceImpl;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    private HttpServletResponse response;
     @ResponseBody
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++API+++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 通过异常处理器方法统一返回响应结果
     @ExceptionHandler(Exception.class)
     public Res handleException(Exception E){
+        response.setStatus(400);
         return Res.fail(E.getMessage());
     }
     @PostMapping("uploadPortrait")
@@ -79,7 +82,11 @@ public class UserController {
     }
     //-----------------信息修改---------------
     @PostMapping("update")
-    public Res<Object> update(User user) throws Exception{
+    public Res<Object> update(HttpServletRequest request,User user) throws Exception{
+        String token=request.getHeader("token");
+        int id=(int) JwtUtil.parseJWT(token).get("id");
+        user.setId(id);
+        System.out.println(user==null);
         if(userServiceImpl.update_general(user)>=1){
             return Res.success("update completed",true);
         }

@@ -38,7 +38,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public int update_general(User user) throws Exception{
+    public int update_general(User user){
+        System.out.println(user);
         user.setPassword(md5.getMD5String(user.getPassword()));
         return userMapper.update_general(user, CONSTANT.getCurrentTime());
     }

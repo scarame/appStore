@@ -3,7 +3,6 @@ package generator.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.IOUtils;
 import generator.entity.App;
-import generator.entity.Collection;
 import generator.entity.Res;
 import generator.service.AppService;
 import generator.service.CollectionService;
@@ -30,14 +29,17 @@ public class AppController {
     private AppService appService;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    HttpServletResponse response;
 
     // 通过异常处理器方法统一返回响应结果
     @ExceptionHandler(Exception.class)
     public Res handleException(Exception E){
+        response.setStatus(400);
         return Res.fail(E.getMessage());
     }
 
-    @PostMapping("List")
+    @PostMapping("list")
     public Res appList(int pages,int rows) {
 
         List<App> list = appService.appList(pages,rows);

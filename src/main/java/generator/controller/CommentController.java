@@ -22,7 +22,7 @@ CommentController {
     @PostMapping("AppCommentList")
     public Object AppCommentList(int appId){
         List<Comments> find = commentService.listComment(appId);
-        return Res.success("",find) ;
+        return Res.success("query successfully",find) ;
     }
 
 
