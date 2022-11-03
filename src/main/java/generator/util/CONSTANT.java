@@ -12,7 +12,9 @@ public class CONSTANT {
     public final static String TOKEN_KEY=getAttribute("private_key");
     //token过期时间单位 和 单位数
     public final static int count=Integer.parseInt(getAttribute("time_count"));
-    public  static TimeUnit C_TimeUnit=TimeUnit.MINUTES;
+    public final static TimeUnit C_TimeUnit=TimeUnit.MINUTES;
+    public final static String portrait_storage_path=getAttribute("portrait_storage_path");
+    public final static String app_storage_path=getAttribute("app_storage_path");
     //获取当前日期和时间
     public  static String getCurrentTime(){
         Date date = new Date();

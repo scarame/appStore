@@ -5,6 +5,7 @@ import generator.entity.Collection;
 import generator.entity.Res;
 import generator.entity.User;
 import generator.service.CollectionService;
+import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import generator.util.md5;
 import generator.service.UserService;
@@ -42,7 +43,7 @@ public class UserController {
         //获取文件名
         int uID=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
         String fileName = "userPortrait_"+uID+".png";
-        String tmpFilePath =  "C://Users//acer//Desktop//picture"  ;
+        String tmpFilePath = CONSTANT.portrait_storage_path;
         String resourcesPath = tmpFilePath + "//" + fileName;
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
