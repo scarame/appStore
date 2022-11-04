@@ -21,4 +21,6 @@ public interface AppService extends IService<App> {
     int updateApp (App app);
     //app下载
     String getAppUrl(int  appId);
+    //增加下载次数
+    void addDownloadCount(int appId);
 }

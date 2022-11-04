@@ -25,9 +25,14 @@ public interface AppMapper extends BaseMapper<App> {
     //应用列表
     @Select("select * from app order by app_scorers desc,installations_count desc limit #{s},#{e}")
     List<App> selectList(int s,int e);
+    @Select("select count('app_id') from app")
+    int appsNumber();
     //更改应用状态
     @Update("UPDATE app SET state=#{state} WHERE app_id = #{appId};")
     int UpdateApp(App app);
+    //增加下载次数
+    @Update("UPDATE app SET installations_count=installations_count+1 WHERE app_id = #{appId};")
+    int addDownloadCount(int appId);
     //获取存储路径
     @Select("select app_url from app where app_id=#{appId}")
     String getAppUrl(int  appId);

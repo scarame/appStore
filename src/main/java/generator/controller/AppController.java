@@ -4,6 +4,7 @@ package generator.controller;
 import com.baomidou.mybatisplus.core.toolkit.IOUtils;
 import generator.entity.App;
 import generator.entity.Res;
+import generator.mapper.AppMapper;
 import generator.service.AppService;
 import generator.service.CollectionService;
 import generator.util.JwtUtil;
@@ -19,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("app")
@@ -27,6 +30,8 @@ public class AppController {
 
     @Autowired
     private AppService appService;
+    @Autowired
+    private AppMapper appMapper;
     @Autowired
     private CollectionService collectionService;
     @Autowired
@@ -41,9 +46,11 @@ public class AppController {
 
     @PostMapping("list")
     public Res appList(int pages,int rows) {
-
         List<App> list = appService.appList(pages,rows);
-        return Res.success("query successfully",list);
+        Map<String,Object> map=new HashMap<>();
+        map.put("appListInfo",list);
+        map.put("maxPage",(appMapper.appsNumber()+rows-1)/rows);
+        return Res.success("query successfully",map);
     }
     @PostMapping("findByName")
     public Res findAppByName(String appName){
@@ -63,13 +70,12 @@ public class AppController {
     }
     @PostMapping("download")
     public Res getFile(HttpServletRequest request, HttpServletResponse response, int appId) throws Exception{
-        int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
-
-        if(collectionService.collect(uid,appId)!=1) {
-
-            return Res.success("已经下载该软件", true);
+        if(request.getHeader("token")!=null){
+            int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
+            if(collectionService.collect(uid,appId)!=1) {
+                return Res.success("已经下载该软件", true);
+            }
         }
-
         File readFile = new File(appService.getAppUrl(appId));
         //字节流-用于读文件  这里只是demo用的非缓冲流。实际项目可以用BufferedInputStream。
         FileInputStream fileInputStream = new FileInputStream(readFile);//字节流
@@ -88,7 +94,7 @@ public class AppController {
         //关闭资源
         IOUtils.closeQuietly(fileInputStream);
         IOUtils.closeQuietly(outputStream);
-
+        appService.addDownloadCount(appId);
         return Res.success("下载成功");
     }
 }

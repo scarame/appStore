@@ -15,7 +15,14 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] generalApi = {"/**/login/**/","/**/user/register/**/"};
+        String[] generalApi =
+                {"/**/login/**/",
+                "/**/user/register/**/",
+                "/**/app/download/**/",
+                "/**/app/list/**/",
+                "/**/app/findByName/**/",
+                "/**/app/findByType/**/"
+                };
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(generalApi);

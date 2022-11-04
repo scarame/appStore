@@ -24,7 +24,6 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     public List<App> findByName(String appName) {
         return mapper.findByName(appName);
     }
-
     @Override
     public List<App> findByType(String appType) {
         return mapper.findByType(appType);
@@ -36,5 +35,9 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     @Override
     public String getAppUrl(int appId) {
         return mapper.getAppUrl(appId);
+    }
+    @Override
+    public void addDownloadCount(int appId) {
+        mapper.addDownloadCount(appId);
     }
 }

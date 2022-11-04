@@ -4,6 +4,7 @@ package generator.controller;
 import generator.entity.Collection;
 import generator.entity.Res;
 import generator.entity.User;
+import generator.mapper.UserMapper;
 import generator.service.CollectionService;
 import generator.util.CONSTANT;
 import generator.util.JwtUtil;
@@ -18,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,6 +31,8 @@ public class UserController {
     private UserService userServiceImpl;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private HttpServletResponse response;
     @ResponseBody
@@ -66,9 +71,12 @@ public class UserController {
     }
     //-----------------用户列表查询---------------
     @PostMapping("list")
-    public Res<List<User>>  UserList( int pages, int rows) {
+    public Res  UserList( int pages, int rows) {
         List<User> users=  userServiceImpl.userList(pages,rows);
-        return Res.success("query successfully",true,users);
+        Map<String,Object> map=new HashMap<>();
+        map.put("userListInfo",users);
+        map.put("maxPage",(userMapper.usersNumber()+rows-1)/rows);
+        return Res.success("query successfully",map);
     }
     //-----------------用注册---------------
     @PostMapping("register")

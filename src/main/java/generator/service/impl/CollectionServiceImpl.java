@@ -21,9 +21,9 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
 
     @Override
     public int collect(int userId,int appId) {
-     if(collectionMapper.repeatedDownload(appId)==null){
+     if(collectionMapper.repeatedDownload(userId, appId)==null){
          collectionMapper.collect(userId,appId);
-            return 1;
+         return 1;
      }else{
          return 2;
      }

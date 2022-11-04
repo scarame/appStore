@@ -25,6 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
     //用户列表
     @Select("select * from user limit #{s},#{e}")
     List<User> userList(int s, int e);
+    @Select("select count('id') from user")
+    int usersNumber();
     //删除用户
     @Delete("delete from user where id=#{id}")
     int userDelete(int id);
