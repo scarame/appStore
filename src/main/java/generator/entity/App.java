@@ -116,7 +116,7 @@ public class App implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        generator.entity.App other = (generator.entity.App) that;
+        App other = (App) that;
         return (this.getApp_id() == null ? other.getApp_id() == null : this.getApp_id().equals(other.getApp_id()))
             && (this.getEdition() == null ? other.getEdition() == null : this.getEdition().equals(other.getEdition()))
             && (this.getApp_name() == null ? other.getApp_name() == null : this.getApp_name().equals(other.getApp_name()))

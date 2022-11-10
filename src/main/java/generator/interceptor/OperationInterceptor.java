@@ -20,7 +20,6 @@ public class OperationInterceptor implements HandlerInterceptor {
         try {
             String token= request.getHeader("token");
             int type=(int)JwtUtil.parseJWT(token).get("userType");
-            System.out.println(type);
             if(type>=2){
                 return true;
             }

@@ -17,8 +17,12 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     @Autowired
     private AppMapper mapper;
     @Override
-    public List<App> appList(int pages,int rows) {
-        return mapper.selectList((pages-1)*rows,rows);
+    public List<App> appList(String column,String sort,int pages,int rows) {
+        pages=(pages-1)*rows;
+        if(pages<0){
+            pages=0;
+        }
+        return mapper.selectList(column,sort,pages,rows);
     }
     @Override
     public List<App> findByName(String appName) {
@@ -28,6 +32,12 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     public List<App> findByType(String appType) {
         return mapper.findByType(appType);
     }
+
+    @Override
+    public App updateAppInfo(App app) {
+        return mapper.UpdateAppInfo(app);
+    }
+
     @Override
     public int updateApp(App app) {
         return mapper.UpdateApp(app);
@@ -39,5 +49,10 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     @Override
     public void addDownloadCount(int appId) {
         mapper.addDownloadCount(appId);
+    }
+
+    @Override
+    public int deleteApp(int app_id) {
+        return mapper.deleteApp(app_id);
     }
 }

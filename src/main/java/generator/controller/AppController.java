@@ -45,12 +45,12 @@ public class AppController {
     }
 
     @PostMapping("list")
-    public Res appList(int pages,int rows) {
-        List<App> list = appService.appList(pages,rows);
+    public Res appList(String column,String sort,int pages,int rows) {
+        List<App> list = appService.appList(column,sort,pages,rows);
         Map<String,Object> map=new HashMap<>();
         map.put("appListInfo",list);
         map.put("maxPage",(appMapper.appsNumber()+rows-1)/rows);
-        return Res.success("query successfully",map);
+        return Res.success("query successfully",list);
     }
     @PostMapping("findByName")
     public Res findAppByName(String appName){
@@ -62,11 +62,20 @@ public class AppController {
         List<App> appList = appService.findByType(appType);
         return Res.success("query successfully",appList);
     }
-
+    @PostMapping("updateInfo")
+    public Res updateInfo(App app){
+        appService.updateAppInfo(app);
+        return Res.success("update completed");
+    }
     @PostMapping("update")
     public Object update(App app){
         appService.updateApp(app);
-        return Res.success("update completed",app);
+        return Res.success("update completed");
+    }
+    @PostMapping("delete")
+    public Object deleteApp(int app_id){
+        appService.deleteApp(app_id);
+        return Res.success("successfully delete");
     }
     @PostMapping("download")
     public Res getFile(HttpServletRequest request, HttpServletResponse response, int appId) throws Exception{
