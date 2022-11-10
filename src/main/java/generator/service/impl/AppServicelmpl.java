@@ -22,6 +22,10 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
         if(pages<0){
             pages=0;
         }
+        if(column==null||sort==null){
+            column="app_scorers";
+            sort="desc";
+        }
         return mapper.selectList(column,sort,pages,rows);
     }
     @Override
