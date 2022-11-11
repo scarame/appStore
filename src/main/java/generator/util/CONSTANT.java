@@ -15,6 +15,7 @@ public class CONSTANT {
     public final static TimeUnit C_TimeUnit=TimeUnit.MINUTES;
     public final static String portrait_storage_path=getAttribute("portrait_storage_path");
     public final static String app_storage_path=getAttribute("app_storage_path");
+    public final static String app_icon_path=getAttribute("app_icon_path");
     //获取当前日期和时间
     public  static String getCurrentTime(){
         Date date = new Date();

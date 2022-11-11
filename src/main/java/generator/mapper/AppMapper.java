@@ -55,6 +55,9 @@ public interface AppMapper extends BaseMapper<App> {
     @Delete("DELETE FROM collection WHERE user_id = #{app_id};" +
             "DELETE FROM app WHERE app_id = #{app_id}")
     int deleteApp(int app_id);
+    //存图标
+    @Update("update app set app_icon=#{path} where app_id=#{appId}")
+    int updateIcon(String path,int appId);
 }
 
 

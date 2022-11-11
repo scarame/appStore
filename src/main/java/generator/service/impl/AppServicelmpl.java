@@ -59,4 +59,9 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     public int deleteApp(int app_id) {
         return mapper.deleteApp(app_id);
     }
+
+    @Override
+    public int uploadAppIcon(String path, int appId) {
+        return mapper.updateIcon(path,appId);
+    }
 }

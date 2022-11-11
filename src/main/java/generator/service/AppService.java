@@ -26,4 +26,6 @@ public interface AppService extends IService<App> {
     //增加下载次数
     void addDownloadCount(int appId);
     int deleteApp(int app_id);
+    //获取app图标
+    int uploadAppIcon(String path,int appId);
 }

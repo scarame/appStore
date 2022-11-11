@@ -7,18 +7,18 @@ import generator.entity.Res;
 import generator.mapper.AppMapper;
 import generator.service.AppService;
 import generator.service.CollectionService;
+import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +76,29 @@ public class AppController {
     public Object deleteApp(int app_id){
         appService.deleteApp(app_id);
         return Res.success("successfully delete");
+    }
+    @GetMapping("getIcon")
+    public String getIcon (String src) throws Exception{
+        File file = new File(src);
+        byte[] bytes = new byte[1024];
+        OutputStream os = response.getOutputStream();
+        FileInputStream fis = new FileInputStream(file);
+        while ((fis.read(bytes)) != -1) {
+            os.write(bytes);
+            os.flush();
+        }
+        return "success";
+    }
+    @GetMapping("uploadIcon")
+    public Res uploadIcon (@RequestParam("portrait") MultipartFile fileUpload,int appId) throws Exception{
+        int appID=appId;
+        String fileName = "appIcon_"+appID+".png";
+        String tmpFilePath = CONSTANT.app_icon_path;
+        String resourcesPath = tmpFilePath + "//" + fileName;
+        File upFile = new File(resourcesPath);
+        fileUpload.transferTo(upFile);
+        appService.uploadAppIcon(resourcesPath,appID);
+        return Res.success("upload successfully");
     }
     @PostMapping("download")
     public Res getFile(HttpServletRequest request, HttpServletResponse response, int appId) throws Exception{
