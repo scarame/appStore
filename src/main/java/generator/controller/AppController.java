@@ -50,7 +50,7 @@ public class AppController {
         Map<String,Object> map=new HashMap<>();
         map.put("appListInfo",list);
         map.put("maxPage",(appMapper.appsNumber()+rows-1)/rows);
-        return Res.success("query successfully",list);
+        return Res.success("query successfully",map);
     }
     @PostMapping("findByName")
     public Res findAppByName(String appName){
