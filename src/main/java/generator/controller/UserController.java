@@ -47,18 +47,19 @@ public class UserController {
     public Res uploadPortrait(@RequestParam("portrait") MultipartFile fileUpload,HttpServletRequest request) throws Exception{
         //获取文件名
         int uID=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
-        String fileName = "userPortrait_"+uID+".png";
+        String fileName =uID+".png";
         String tmpFilePath = CONSTANT.portrait_storage_path;
         String resourcesPath = tmpFilePath + "//" + fileName;
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
-        userServiceImpl.uploadPortrait(resourcesPath,uID);
+        userServiceImpl.uploadPortrait(fileName,uID);
         return Res.success("upload successfully");
     }
     @PostMapping("getPortrait")
     public String getPortrait (HttpServletResponse response,HttpServletRequest request) throws Exception{
         int uid =(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
-        File file = new File(userServiceImpl.getPortrait(uid));
+        String src = CONSTANT.portrait_storage_path+"//"+uid+".png";
+        File file = new File(src);
         byte[] bytes = new byte[1024];
 
         OutputStream os = response.getOutputStream();
@@ -67,6 +68,8 @@ public class UserController {
             os.write(bytes);
             os.flush();
         }
+        os.close();
+        fis.close();
         return "success";
     }
     //-----------------用户列表查询---------------
@@ -113,10 +116,8 @@ public class UserController {
     //-----------------删除用户---------------
     @PostMapping("delete")
     public Res<Object> deleteUser(int id){
-        if(userServiceImpl.delete(id)>=1){
-            return Res.success("successfully delete",true);
-        }
-        return Res.success("fail to delete",true);
+        String mes=userServiceImpl.delete(id)==1?"successfully delete":"fail to delete";
+        return Res.success(mes,true);
     }
     @PostMapping("collectedAppList")
     public Object appList(HttpServletRequest request) {

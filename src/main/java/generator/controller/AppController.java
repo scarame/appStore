@@ -2,6 +2,7 @@ package generator.controller;
 
 
 import com.baomidou.mybatisplus.core.toolkit.IOUtils;
+import com.baomidou.mybatisplus.extension.api.R;
 import generator.entity.App;
 import generator.entity.Res;
 import generator.mapper.AppMapper;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -36,14 +38,12 @@ public class AppController {
     private CollectionService collectionService;
     @Autowired
     HttpServletResponse response;
-
     // 通过异常处理器方法统一返回响应结果
     @ExceptionHandler(Exception.class)
     public Res handleException(Exception E){
         response.setStatus(400);
         return Res.fail(E.getMessage());
     }
-
     @PostMapping("list")
     public Res appList(String column,String sort,int pages,int rows) {
         List<App> list = appService.appList(column,sort,pages,rows);
@@ -72,13 +72,18 @@ public class AppController {
         appService.updateApp(app);
         return Res.success("update completed");
     }
-    @PostMapping("delete")
+//    public static Object customModification(App app){
+//        appService.updateApp(app);
+//        return Res.success("update completed");
+//    }
+    @PostMapping("removeApp")
     public Object deleteApp(int app_id){
         appService.deleteApp(app_id);
         return Res.success("successfully delete");
     }
     @GetMapping("getIcon")
     public String getIcon (String src) throws Exception{
+        src = CONSTANT.app_icon_path+"//"+src+".png";
         File file = new File(src);
         byte[] bytes = new byte[1024];
         OutputStream os = response.getOutputStream();
@@ -87,32 +92,84 @@ public class AppController {
             os.write(bytes);
             os.flush();
         }
+        fis.close();
         return "success";
     }
     @GetMapping("uploadIcon")
-    public Res uploadIcon (@RequestParam("portrait") MultipartFile fileUpload,int appId) throws Exception{
-        int appID=appId;
-        String fileName = "appIcon_"+appID+".png";
+    public Res uploadIcon (@RequestParam("appIcon") MultipartFile fileUpload,int appId) throws Exception{
+        String fileName = "appIcon_"+appId+".png";
         String tmpFilePath = CONSTANT.app_icon_path;
         String resourcesPath = tmpFilePath + "//" + fileName;
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
-        appService.uploadAppIcon(resourcesPath,appID);
+        appService.uploadAppIcon(("appIcon_"+appId),appId);
         return Res.success("upload successfully");
     }
-    @PostMapping("download")
-    public Res getFile(HttpServletRequest request, HttpServletResponse response, int appId) throws Exception{
+    //========================================img =================================
+    @GetMapping("getImg")
+    public Res getImg (int appId,int index) throws Exception{
+        int[] resArr=appService.getImgInfo(appId);
+        int max=resArr[0];
+        int min=0;
+        try {
+           min =resArr[0]-resArr[1]+10*(1-(resArr[0]+1)/resArr[1])+1;
+        }catch (Exception e){return Res.fail("no date");}
+        int curr=(min+index)%10;
+        if(min<max){
+            if(!(min<=curr&&curr<=max)){
+                return Res.fail("1-  index out of bounds");
+            }
+        }else if(!(curr<=max||curr>=min)){
+            return Res.fail("2-  index out of bounds");
+        }
+        String src = CONSTANT.app_img_path+"//"+appId+"//"+(min+index)%10+".jpg";
+        File file = new File(src);
+        byte[] bytes = new byte[1024];
+        OutputStream os = response.getOutputStream();
+        FileInputStream fis = new FileInputStream(file);
+        while ((fis.read(bytes)) != -1) {
+            os.write(bytes);
+            os.flush();
+        }
+        fis.close();
+        return Res.success("query successfully");
+    }
+    @GetMapping("uploadImg")
+    public Res uploadImg (@RequestParam("appImg") MultipartFile fileUpload,int appId,int index) throws Exception{
+        String fileName;
+        String tmpFilePath = CONSTANT.app_img_path;
+        if(index==-1){
+            int[] resArr=appService.addImg(10,appId);
+            fileName = resArr[0]+".jpg";
+        }else if(index>-2&&index<appService.getImgInfo(appId)[1]){
+            fileName=index+".jpg";
+        }else{return Res.fail("Invalid parameter");}
+
+        String resourcesPath = tmpFilePath + "//"+appId+"//"+fileName;
+        File upFile = new File(resourcesPath);
+        fileUpload.transferTo(upFile);
+        return Res.success("upload successfully");
+    }
+    @RequestMapping("deleteImg")
+    public Res deleteImg (int appId) throws Exception{
+        String mes= appService.deleteImg(appId)== 1 ? "successfully delete": "Invalid operation";
+        return Res.success(mes);
+    }
+    @RequestMapping("download")
+    public Res getFile(HttpServletRequest request, HttpServletResponse response, int appId)throws IOException {
         if(request.getHeader("token")!=null){
             int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
             if(collectionService.collect(uid,appId)!=1) {
                 return Res.success("已经下载该软件", true);
             }
         }
-        File readFile = new File(appService.getAppUrl(appId));
+        String src=CONSTANT.app_storage_path+"//";
+        String fileName=appService.getAppUrl(appId);
+        File readFile = new File(src+fileName);
         //字节流-用于读文件  这里只是demo用的非缓冲流。实际项目可以用BufferedInputStream。
         FileInputStream fileInputStream = new FileInputStream(readFile);//字节流
         //设置文件下载方式
-        response.setHeader("content-disposition","attachment;filename="+ URLEncoder.encode(appService.getAppUrl(appId),"utf-8"));
+        response.setHeader("content-disposition","attachment;filename="+URLEncoder.encode(fileName,"utf-8"));
         ServletOutputStream outputStream = response.getOutputStream(); //字节流
 
         //流数据交换，每次交换10k数据大小 （1024k = 1m）
@@ -127,6 +184,18 @@ public class AppController {
         IOUtils.closeQuietly(fileInputStream);
         IOUtils.closeQuietly(outputStream);
         appService.addDownloadCount(appId);
-        return Res.success("下载成功");
+        fileInputStream.close();
+        return Res.success("successfully upload");
+    }
+    @RequestMapping("upload")
+    public Res receiveFile(@RequestParam("package") MultipartFile fileUpload,int appId,String edition)throws IOException {
+
+        if(appService.findById(appId)==null){ return Res.fail("nonexistent app");}
+        String fileName=fileUpload.getOriginalFilename();
+        String resourcesPath = CONSTANT.app_storage_path + "//" + fileName;
+        File upFile = new File(resourcesPath);
+        fileUpload.transferTo(upFile);
+        appService.uploadApp(appId,"'"+fileUpload.getSize()+"B'",edition,fileUpload.getOriginalFilename());
+        return Res.success("success");
     }
 }

@@ -8,12 +8,12 @@ import generator.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppService {
-
-
     @Autowired
     private AppMapper mapper;
     @Override
@@ -36,7 +36,8 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     public List<App> findByType(String appType) {
         return mapper.findByType(appType);
     }
-
+    @Override
+    public List<App> findById(int appId) {return mapper.findById(appId); }
     @Override
     public App updateAppInfo(App app) {
         return mapper.UpdateAppInfo(app);
@@ -63,5 +64,41 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     @Override
     public int uploadAppIcon(String path, int appId) {
         return mapper.updateIcon(path,appId);
+    }
+
+    @Override
+    public int[]  addImg(int maxIndex, int appId) {
+        Map map=mapper.addImg(maxIndex,appId);
+        int[] res={(int)map.get("oid"),(int)map.get("Inum")};
+        return res;
+    }
+    @Override
+    public int[] getImgInfo(int appId) {
+        Map map=mapper.getImgInfo(appId);
+        int[] res={(int)map.get("imgCurrIndex"),(int)map.get("imgNum")};
+        return res;
+    }
+    @Override
+    public int deleteImg(int appId) {
+        return mapper.deleteImg(appId);
+    }
+
+    @Override
+    public void uploadApp(int appId, String size, String edition,String appName) {
+         mapper.uploadApp(appId,size,edition,appName);
+    }
+
+    public static String  customModification(App app) throws Exception{
+        Field[] fieldList = app.getClass().getDeclaredFields();
+        String fieldStr="", str="", name="";
+        try {
+            for (int i=2;i<14;i++){
+                fieldList[i].setAccessible(true);
+                str=(String) fieldList[i].get(app);
+                name=fieldList[i].getName();
+                fieldStr=fieldStr + (str==null?"":(name+"='"+str+"',"));
+            }
+        }catch (Exception e){}
+        return fieldStr.substring(0,fieldStr.length()-1);
     }
 }

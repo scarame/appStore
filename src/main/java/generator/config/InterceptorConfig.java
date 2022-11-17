@@ -20,6 +20,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/user/register/**/",
                 "/**/app/download/**/",
                 "/**/app/list/**/",
+                "/**/app/getIcon/**/",
+                "/**/app/getImg/**/",
                 "/**/app/findByName/**/",
                 "/**/app/findByType/**/"
                 };

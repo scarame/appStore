@@ -2,10 +2,7 @@ package generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import generator.entity.App;
-
 import java.util.List;
-
-;
 
 /**
  *
@@ -17,6 +14,8 @@ public interface AppService extends IService<App> {
     List<App>  findByName (String appName);
     //类别查找
     List<App>  findByType (String appType);
+    //id查找
+    List<App>  findById(int appId);
     //信息修盖
     App updateAppInfo(App app);
     //状态修改
@@ -28,4 +27,9 @@ public interface AppService extends IService<App> {
     int deleteApp(int app_id);
     //获取app图标
     int uploadAppIcon(String path,int appId);
+    //添加图片
+    int[] addImg(int maxIndex, int appId);
+    int[] getImgInfo(int appId);
+    int deleteImg(int appId);
+    void uploadApp(int appId,String size,String edition,String appName);
 }
