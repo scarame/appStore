@@ -10,6 +10,7 @@ import generator.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -42,6 +43,17 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog>
     @Override
     public void notLogout(String time, String account) {
         loginLogMapper.notLogout(time,account);
+    }
+
+    @Override
+    public List<LoginLog> logList(int page, int rows) {
+            page=(page-1)*rows;
+        return loginLogMapper.logList(page,rows);
+    }
+    @Override
+    public List<LoginLog> inquiryUser(int page, int rows, String userName) {
+            page=(page-1)*rows;
+        return loginLogMapper.inquiryUser(page,rows,userName);
     }
 
 }

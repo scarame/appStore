@@ -29,7 +29,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("app")
 public class AppController {
-
     @Autowired
     private AppService appService;
     @Autowired
@@ -72,16 +71,12 @@ public class AppController {
         appService.updateApp(app);
         return Res.success("update completed");
     }
-//    public static Object customModification(App app){
-//        appService.updateApp(app);
-//        return Res.success("update completed");
-//    }
-    @PostMapping("removeApp")
+    @RequestMapping("removeApp")
     public Object deleteApp(int app_id){
         appService.deleteApp(app_id);
         return Res.success("successfully delete");
     }
-    @GetMapping("getIcon")
+    @RequestMapping("getIcon")
     public String getIcon (String src) throws Exception{
         src = CONSTANT.app_icon_path+"//"+src+".png";
         File file = new File(src);
@@ -106,23 +101,45 @@ public class AppController {
         return Res.success("upload successfully");
     }
     //========================================img =================================
-    @GetMapping("getImg")
+
+     static int isExist(int resArr0, int resArr1,int index){
+         int max=resArr0;
+         int min=0;
+
+         try {
+             min =resArr0-resArr1+10*(1-(resArr0+1)/resArr1)+1;
+         }catch (Exception e){return -1;}
+         int curr=(min+index)%10;
+         if(min<=max){
+             if(!(min<=curr&&curr<=max)){
+                 return -1;
+             }
+         }else if(!(curr<=max||curr>=min)){
+             return -1;
+         }
+        return min;
+    }
+    @RequestMapping("getImg")
     public Res getImg (int appId,int index) throws Exception{
         int[] resArr=appService.getImgInfo(appId);
-        int max=resArr[0];
-        int min=0;
-        try {
-           min =resArr[0]-resArr[1]+10*(1-(resArr[0]+1)/resArr[1])+1;
-        }catch (Exception e){return Res.fail("no date");}
-        int curr=(min+index)%10;
-        if(min<max){
-            if(!(min<=curr&&curr<=max)){
-                return Res.fail("1-  index out of bounds");
-            }
-        }else if(!(curr<=max||curr>=min)){
-            return Res.fail("2-  index out of bounds");
-        }
-        String src = CONSTANT.app_img_path+"//"+appId+"//"+(min+index)%10+".jpg";
+        int getIndex =AppController.isExist(resArr[0],resArr[1],index);
+//        int max=resArr[0];
+//        int min=0;
+//
+//        try {
+//            min =resArr[0]-resArr[1]+10*(1-(resArr[0]+1)/resArr[1])+1;
+//        }catch (Exception e){return Res.fail("no date");}
+//        int curr=(min+index)%10;
+//
+//        System.out.println(min+"==>"+max+"   curr:"+curr);
+//        if(min<=max){
+//            if(!(min<=curr&&curr<=max)){
+//                return Res.fail("1-  index out of bounds");
+//            }
+//        }else if(!(curr<=max||curr>=min)){
+//            return Res.fail("2-  index out of bounds");
+//        }
+        String src = CONSTANT.app_img_path+"//"+appId+"//"+(getIndex+index)%10+".jpg";
         File file = new File(src);
         byte[] bytes = new byte[1024];
         OutputStream os = response.getOutputStream();
@@ -134,14 +151,14 @@ public class AppController {
         fis.close();
         return Res.success("query successfully");
     }
-    @GetMapping("uploadImg")
+    @RequestMapping("uploadImg")
     public Res uploadImg (@RequestParam("appImg") MultipartFile fileUpload,int appId,int index) throws Exception{
         String fileName;
         String tmpFilePath = CONSTANT.app_img_path;
         if(index==-1){
             int[] resArr=appService.addImg(10,appId);
             fileName = resArr[0]+".jpg";
-        }else if(index>-2&&index<appService.getImgInfo(appId)[1]){
+        }else if(index>-1&&index<appService.getImgInfo(appId)[1]){
             fileName=index+".jpg";
         }else{return Res.fail("Invalid parameter");}
 
@@ -150,7 +167,7 @@ public class AppController {
         fileUpload.transferTo(upFile);
         return Res.success("upload successfully");
     }
-    @RequestMapping("deleteImg")
+    @PostMapping("deleteImg")
     public Res deleteImg (int appId) throws Exception{
         String mes= appService.deleteImg(appId)== 1 ? "successfully delete": "Invalid operation";
         return Res.success(mes);
@@ -187,7 +204,7 @@ public class AppController {
         fileInputStream.close();
         return Res.success("successfully upload");
     }
-    @RequestMapping("upload")
+    @PostMapping("upload")
     public Res receiveFile(@RequestParam("package") MultipartFile fileUpload,int appId,String edition)throws IOException {
 
         if(appService.findById(appId)==null){ return Res.fail("nonexistent app");}

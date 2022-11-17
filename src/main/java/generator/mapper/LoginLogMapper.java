@@ -2,12 +2,13 @@ package generator.mapper;
 
 import generator.entity.LoginLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import generator.entity.User;
-import org.apache.ibatis.annotations.Insert;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Entity generator.entity.LoginLog
@@ -22,8 +23,13 @@ public interface LoginLogMapper extends BaseMapper<LoginLog> {
     void notLogout(String time,String account);
     @Update("update login_log set login_out_time=#{time} where id=#{id}")
     void logout_log(String time ,int id);
-}
+    @Select("select * from login_log order by id desc limit #{s},#{e}")
+    List<LoginLog> logList(int s, int e);
+    @Select("select * from login_log where login_account=#{userName} order by id desc limit #{s},#{e}")
+    List<LoginLog> inquiryUser(int s, int e,String userName);
 
+
+}
 
 
 

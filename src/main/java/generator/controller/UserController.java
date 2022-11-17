@@ -1,11 +1,14 @@
 package generator.controller;
 
 
+import com.baomidou.mybatisplus.extension.api.R;
 import generator.entity.Collection;
+import generator.entity.LoginLog;
 import generator.entity.Res;
 import generator.entity.User;
 import generator.mapper.UserMapper;
 import generator.service.CollectionService;
+import generator.service.LoginLogService;
 import generator.util.CONSTANT;
 import generator.util.JwtUtil;
 import generator.util.md5;
@@ -35,6 +38,8 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private HttpServletResponse response;
+    @Autowired
+    private LoginLogService loginLogService;
     @ResponseBody
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++API+++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 通过异常处理器方法统一返回响应结果
@@ -94,7 +99,7 @@ public class UserController {
     }
     //-----------------信息修改---------------
     @PostMapping("update")
-    public Res<Object> update(HttpServletRequest request,User user) throws Exception{
+    public Res update(HttpServletRequest request,User user) throws Exception{
         String token=request.getHeader("token");
         int id=(int) JwtUtil.parseJWT(token).get("id");
         user.setId(id);
@@ -115,16 +120,28 @@ public class UserController {
     }
     //-----------------删除用户---------------
     @PostMapping("delete")
-    public Res<Object> deleteUser(int id){
+    public Res deleteUser(int id){
         String mes=userServiceImpl.delete(id)==1?"successfully delete":"fail to delete";
         return Res.success(mes,true);
     }
     @PostMapping("collectedAppList")
-    public Object appList(HttpServletRequest request) {
+    public Res appList(HttpServletRequest request) {
         int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");
         List<Collection> list = collectionService.collectedList(uid);
 
         return Res.success("查询成功", list);
     }
+    @GetMapping("getLog")
+    public Res getLog(String option,int page,int rows,HttpServletRequest request){
+        String account;
+        if(option.equals("1")){
+            List<LoginLog> logList= loginLogService.logList(page,rows);
+            return  Res.success("查询成功",logList);
+        }else if(option.equals("0")){
+            account=JwtUtil.parseJWT(request.getHeader("token")).get("account").toString();
+        }else {account=option;}
+        List<LoginLog> logList=loginLogService.inquiryUser(page,rows,account);
+        return  Res.success("查询成功",logList);
 
+    }
  }
