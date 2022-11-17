@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Entity generator.entity.LoginLog
@@ -27,8 +28,10 @@ public interface LoginLogMapper extends BaseMapper<LoginLog> {
     List<LoginLog> logList(int s, int e);
     @Select("select * from login_log where login_account=#{userName} order by id desc limit #{s},#{e}")
     List<LoginLog> inquiryUser(int s, int e,String userName);
-
-
+    @Select("select max(id),min(id) from login_log")
+    Map logCount();
+    @Select("select count(*) from login_log where login_account=#{userName}")
+    int logUserCount(String userName);
 }
 
 

@@ -6,6 +6,7 @@ import generator.entity.Collection;
 import generator.entity.LoginLog;
 import generator.entity.Res;
 import generator.entity.User;
+import generator.mapper.LoginLogMapper;
 import generator.mapper.UserMapper;
 import generator.service.CollectionService;
 import generator.service.LoginLogService;
@@ -36,6 +37,8 @@ public class UserController {
     private CollectionService collectionService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private LoginLogMapper loginLogMapper;
     @Autowired
     private HttpServletResponse response;
     @Autowired
@@ -133,15 +136,22 @@ public class UserController {
     }
     @GetMapping("getLog")
     public Res getLog(String option,int page,int rows,HttpServletRequest request){
-        String account;
+        String account; List<LoginLog> logList; Map<String,Object> map=new HashMap<>();
         if(option.equals("1")){
-            List<LoginLog> logList= loginLogService.logList(page,rows);
-            return  Res.success("查询成功",logList);
+            logList= loginLogService.logList(page,rows);
+            Map m=loginLogMapper.logCount();
+            map.put("maxPage",((int)m.get("max(id)")-(int)m.get("min(id)")));
         }else if(option.equals("0")){
             account=JwtUtil.parseJWT(request.getHeader("token")).get("account").toString();
-        }else {account=option;}
-        List<LoginLog> logList=loginLogService.inquiryUser(page,rows,account);
-        return  Res.success("查询成功",logList);
+            map.put("maxPage",loginLogMapper.logUserCount(account));
+            logList=loginLogService.inquiryUser(page,rows,account);
+        }else {
+            account=option;
+            map.put("maxPage",loginLogMapper.logUserCount(account));
+            logList=loginLogService.inquiryUser(page,rows,account);
+        }
+        map.put("logList",logList);
+        return  Res.success("查询成功",map);
 
     }
  }
