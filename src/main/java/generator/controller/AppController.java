@@ -2,7 +2,6 @@ package generator.controller;
 
 
 import com.baomidou.mybatisplus.core.toolkit.IOUtils;
-import com.baomidou.mybatisplus.extension.api.R;
 import generator.entity.App;
 import generator.entity.Res;
 import generator.mapper.AppMapper;
@@ -188,6 +187,7 @@ public class AppController {
         fileInputStream.close();
         return Res.success("successfully upload");
     }
+
     @PostMapping("upload")
     public Res receiveFile(@RequestParam("package") MultipartFile fileUpload,int appId,String edition)throws IOException {
 
@@ -199,8 +199,11 @@ public class AppController {
         appService.uploadApp(appId,"'"+fileUpload.getSize()+"B'",edition,fileUpload.getOriginalFilename());
         return Res.success("success");
     }
-    @RequestMapping("test")
-    public String test() {
-        return "ok";
+    @PostMapping("addApp")
+    public Res addApp(App app) {
+        if(appService.addApp(app)==1){
+            return Res.success("success");
+        }
+        return Res.fail("fail");
     }
 }

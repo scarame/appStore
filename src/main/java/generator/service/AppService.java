@@ -25,11 +25,16 @@ public interface AppService extends IService<App> {
     //增加下载次数
     void addDownloadCount(int appId);
     int deleteApp(int app_id);
-    //获取app图标
+    //上传app图标
     int uploadAppIcon(String path,int appId);
-    //添加图片
+    //添加或覆盖预览图
     int[] addImg(int maxIndex, int appId);
+    //获取预览图
     int[] getImgInfo(int appId);
+    //删除预览图
     int deleteImg(int appId);
+    //上传应用包
     void uploadApp(int appId,String size,String edition,String appName);
+    //添加新应用
+    int addApp(App app);
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import generator.entity.App;
 import generator.mapper.AppMapper;
 import generator.service.AppService;
+import generator.util.CONSTANT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +87,15 @@ public class AppServicelmpl extends ServiceImpl<AppMapper,App> implements AppSer
     @Override
     public void uploadApp(int appId, String size, String edition,String appName) {
          mapper.uploadApp(appId,size,edition,appName);
+    }
+
+    @Override
+    public int addApp(App app) {
+        if(app.getApp_url()==null){
+            app.setApp_url("");
+        }
+        app.setApp_time(CONSTANT.getCurrentTime());
+        return mapper.addApp(app);
     }
 
     public static String  customModification(App app) throws Exception{

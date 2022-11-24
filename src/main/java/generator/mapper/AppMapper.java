@@ -3,10 +3,7 @@ package generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import generator.entity.App;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -69,9 +66,10 @@ public interface AppMapper extends BaseMapper<App> {
     int deleteImg(int appId);
     @Update("update app set app_size=${size},edition=#{edition},app_url=#{appName} where app_id=#{appId};")
     void uploadApp(int appId,String size,String edition,String appName);
+    @Insert("insert into app (app_name,app_url,app_type,app_introduction,app_web,app_notice,edition,developers) " +
+            "values(#{app_name},#{app_url},#{app_type},#{app_introduction},#{app_web},#{app_notice},#{edition},#{developers}) ")
+    int addApp(App app);
 
-    @Update("update app set app_notice=#{name} where app_id=#{appId};")
-    void test(int appId,String name);
 }
 
 
