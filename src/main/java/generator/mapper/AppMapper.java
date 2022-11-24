@@ -69,6 +69,9 @@ public interface AppMapper extends BaseMapper<App> {
     int deleteImg(int appId);
     @Update("update app set app_size=${size},edition=#{edition},app_url=#{appName} where app_id=#{appId};")
     void uploadApp(int appId,String size,String edition,String appName);
+
+    @Update("update app set app_notice=#{name} where app_id=#{appId};")
+    void test(int appId,String name);
 }
 
 

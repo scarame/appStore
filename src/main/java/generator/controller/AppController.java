@@ -92,7 +92,7 @@ public class AppController {
     }
     @GetMapping("uploadIcon")
     public Res uploadIcon (@RequestParam("appIcon") MultipartFile fileUpload,int appId) throws Exception{
-        String fileName = "appIcon_"+appId+".png";
+        String fileName = "appIcon("+appId+").png";
         String tmpFilePath = CONSTANT.app_icon_path;
         String resourcesPath = tmpFilePath + "//" + fileName;
         File upFile = new File(resourcesPath);
@@ -123,22 +123,6 @@ public class AppController {
     public Res getImg (int appId,int index) throws Exception{
         int[] resArr=appService.getImgInfo(appId);
         int getIndex =AppController.isExist(resArr[0],resArr[1],index);
-//        int max=resArr[0];
-//        int min=0;
-//
-//        try {
-//            min =resArr[0]-resArr[1]+10*(1-(resArr[0]+1)/resArr[1])+1;
-//        }catch (Exception e){return Res.fail("no date");}
-//        int curr=(min+index)%10;
-//
-//        System.out.println(min+"==>"+max+"   curr:"+curr);
-//        if(min<=max){
-//            if(!(min<=curr&&curr<=max)){
-//                return Res.fail("1-  index out of bounds");
-//            }
-//        }else if(!(curr<=max||curr>=min)){
-//            return Res.fail("2-  index out of bounds");
-//        }
         String src = CONSTANT.app_img_path+"//"+appId+"//"+(getIndex+index)%10+".jpg";
         File file = new File(src);
         byte[] bytes = new byte[1024];
@@ -214,5 +198,9 @@ public class AppController {
         fileUpload.transferTo(upFile);
         appService.uploadApp(appId,"'"+fileUpload.getSize()+"B'",edition,fileUpload.getOriginalFilename());
         return Res.success("success");
+    }
+    @RequestMapping("test")
+    public String test() {
+        return "ok";
     }
 }

@@ -141,12 +141,10 @@ public class UserController {
             logList= loginLogService.logList(page,rows);
             Map m=loginLogMapper.logCount();
             map.put("maxPage",((int)m.get("max(id)")-(int)m.get("min(id)")));
-        }else if(option.equals("0")){
-            account=JwtUtil.parseJWT(request.getHeader("token")).get("account").toString();
-            map.put("maxPage",loginLogMapper.logUserCount(account));
-            logList=loginLogService.inquiryUser(page,rows,account);
-        }else {
-            account=option;
+        }else{
+            if(option.equals("0")){
+                account=JwtUtil.parseJWT(request.getHeader("token")).get("account").toString();
+            }else {account=option;}
             map.put("maxPage",loginLogMapper.logUserCount(account));
             logList=loginLogService.inquiryUser(page,rows,account);
         }
