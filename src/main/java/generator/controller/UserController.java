@@ -137,6 +137,10 @@ public class UserController {
     @GetMapping("getLog")
     public Res getLog(String option,int page,int rows,HttpServletRequest request){
         String account; List<LoginLog> logList; Map<String,Object> map=new HashMap<>();
+        int power=(int) JwtUtil.parseJWT(request.getHeader("token")).get("userType");
+        if(power<3){
+            option="0";
+        }
         if(option.equals("1")){
             logList= loginLogService.logList(page,rows);
             Map m=loginLogMapper.logCount();

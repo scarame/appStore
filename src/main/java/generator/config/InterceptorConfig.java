@@ -25,7 +25,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/app/getIcon/**/",
                 "/**/app/getImg/**/",
                 "/**/app/findByName/**/",
-                "/**/app/findByType/**/"
+                "/**/app/findByType/**/",
+                "/**/app/findByID/**/"
                 };
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
@@ -37,13 +38,14 @@ public class InterceptorConfig implements WebMvcConfigurer {
                                     "/**/app/uploadImg/**/",
                                     "/**/app/deleteImg/**/",
                                     "/**/app/uploadIcon/**/",
-                                    "/**/app/updateInfo/**/"
+                                    "/**/app/updateInfo/**/",
+                                    "/**/user/getLog/**/"
                                 };
         registry.addInterceptor(developerInterceptor).addPathPatterns(developerApi);
         WebMvcConfigurer.super.addInterceptors(registry);
 
 
-        String[] importantApi = {"/**/app/update/**/","/**/user/managerUpdate/**/","/**/user/list/**/","/**/user/delete/**/","/**/user/getLog/**/"};
+        String[] importantApi = {"/**/app/update/**/","/**/user/managerUpdate/**/","/**/user/list/**/","/**/user/delete/**/"};
         registry.addInterceptor(operationInterceptor).addPathPatterns(importantApi);
         WebMvcConfigurer.super.addInterceptors(registry);
     }

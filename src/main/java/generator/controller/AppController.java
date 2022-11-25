@@ -60,6 +60,10 @@ public class AppController {
         List<App> appList = appService.findByType(appType);
         return Res.success("query successfully",appList);
     }
+    @GetMapping("findByID")
+    public Object findByID(int app_id){
+        return Res.success("query successfully",appService.findById(app_id));
+    }
     @PostMapping("updateInfo")
     public Res updateInfo(App app){
         appService.updateAppInfo(app);
