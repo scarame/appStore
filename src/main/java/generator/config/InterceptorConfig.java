@@ -26,7 +26,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/app/getImg/**/",
                 "/**/app/findByName/**/",
                 "/**/app/findByType/**/",
-                "/**/app/findByID/**/"
+                "/**/app/findByID/**/",
+                "/**/comments/AppCommentList/**/"
                 };
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")

@@ -84,7 +84,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentsMapper, Comments>
     }
     @Override
     public int saveComment(Comments comments) {
-        comments.setScore_time(new Date());
+//        comments.setScore_time(new Date());
         return commentsMapper.insert(comments);
     }
 }

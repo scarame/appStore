@@ -19,85 +19,29 @@ import java.util.List;
 @Data
 public class Comments implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 
-     */
     private Integer appid;
 
-    /**
-     * 
-     */
     private Integer userid;
 
-    /**
-     * 
-     */
     private String username;
 
-    /**
-     * 
-     */
-    private String score;
+    private double score;
 
-    /**
-     * 
-     */
-    private String score_content;
+    private String content;
 
-    /**
-     * 
-     */
-    private Date score_time;
+    private String score_time;
 
-    /**
-     * 
-     */
     private Integer parent_comment_id;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        generator.entity.Comments other = (generator.entity.Comments) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getAppid() == null ? other.getAppid() == null : this.getAppid().equals(other.getAppid()))
-            && (this.getUserid() == null ? other.getUserid() == null : this.getUserid().equals(other.getUserid()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()))
-            && (this.getScore_content() == null ? other.getScore_content() == null : this.getScore_content().equals(other.getScore_content()))
-            && (this.getScore_time() == null ? other.getScore_time() == null : this.getScore_time().equals(other.getScore_time()))
-            && (this.getParent_comment_id() == null ? other.getParent_comment_id() == null : this.getParent_comment_id().equals(other.getParent_comment_id()));
-    }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getAppid() == null) ? 0 : getAppid().hashCode());
-        result = prime * result + ((getUserid() == null) ? 0 : getUserid().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
-        result = prime * result + ((getScore() == null) ? 0 : getScore().hashCode());
-        result = prime * result + ((getScore_content() == null) ? 0 : getScore_content().hashCode());
-        result = prime * result + ((getScore_time() == null) ? 0 : getScore_time().hashCode());
-        result = prime * result + ((getParent_comment_id() == null) ? 0 : getParent_comment_id().hashCode());
-        return result;
-    }
 
 //    @Override
 //    public String toString() {

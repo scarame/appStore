@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface CommentsMapper extends BaseMapper<Comments> {
     //添加一个评论
-    @Insert("insert into comments (appId,userid,username,score,content,score_time,parent_comment_id) values(#{appid},#{userid},#{username},#{score},#{scoreContent},#{scoreTime},#{parentCommentId})")
+    @Insert("insert into comments (appId,userid,username,score,content,score_time,parent_comment_id) values(#{appid},#{userid},#{username},#{score},#{content},#{score_time},#{parent_comment_id})")
     int insert(Comments gamescore);
 
     //查询父级评论
