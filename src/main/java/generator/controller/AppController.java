@@ -200,14 +200,26 @@ public class AppController {
         String resourcesPath = CONSTANT.app_storage_path + "//" + fileName;
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
-        appService.uploadApp(appId,"'"+fileUpload.getSize()+"B'",edition,fileUpload.getOriginalFilename());
+
+        String s;
+        long appSize=fileUpload.getSize();
+        int count=0;
+        for(int i=0;i<4&&appSize>1024;i++){
+            appSize=appSize/1024 ;
+            count++;
+        }
+        switch (count){
+            case 0: s=appSize+"B";break;
+            case 1: s=appSize+"KB";break;
+            case 2: s=appSize+"MB";break;
+            default: s=appSize+"GB";
+        }
+        appService.uploadApp(appId,"'"+s+"'",edition,fileUpload.getOriginalFilename());
         return Res.success("success");
     }
     @PostMapping("addApp")
     public Res addApp(App app) {
-        if(appService.addApp(app)==1){
-            return Res.success("success");
-        }
-        return Res.fail("fail");
+       int id= appService.addApp(app);
+       return Res.success("success",id);
     }
 }

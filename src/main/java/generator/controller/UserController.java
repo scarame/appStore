@@ -122,11 +122,11 @@ public class UserController {
        return Res.fail("update fail");
     }
     //-----------------删除用户---------------
-    @PostMapping("delete")
-    public Res deleteUser(int id){
-        String mes=userServiceImpl.delete(id)==1?"successfully delete":"fail to delete";
-        return Res.success(mes,true);
-    }
+//    @PostMapping("delete")
+//    public Res deleteUser(int id){
+//        String mes=userServiceImpl.delete(id)==1?"successfully delete":"fail to delete";
+//        return Res.success(mes,true);
+//    }
     @PostMapping("collectedAppList")
     public Res appList(HttpServletRequest request) {
         int uid=(int)JwtUtil.parseJWT(request.getHeader("token")).get("id");

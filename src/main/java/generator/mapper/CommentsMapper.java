@@ -2,10 +2,7 @@ package generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import generator.entity.Comments;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,6 +35,10 @@ public interface CommentsMapper extends BaseMapper<Comments> {
             "        order by c.score_time desc")
     List<Comments> findByReplayId(@Param("childId") int childId);
 
+
+    //test
+    @Update("update comments set score_time=#{time} where parent_comment_id!=-1 and parent_comment_id=#{id} ")
+    void test(String time ,int id);
 
 }
 

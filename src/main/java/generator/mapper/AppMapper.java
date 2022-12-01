@@ -66,10 +66,11 @@ public interface AppMapper extends BaseMapper<App> {
     int deleteImg(int appId);
     @Update("update app set app_size=${size},edition=#{edition},app_url=#{appName} where app_id=#{appId};")
     void uploadApp(int appId,String size,String edition,String appName);
-    @Insert("insert into app (app_name,app_type,app_introduction,app_web,app_notice,edition,developers) " +
-            "values(#{app_name},#{app_type},#{app_introduction},#{app_web},#{app_notice},#{edition},#{developers}) ")
+//    @Insert("insert into app (app_name,app_type,app_introduction,app_web,app_notice,edition,developers) " +
+//            "values(#{app_name},#{app_type},#{app_introduction},#{app_web},#{app_notice},#{edition},#{developers}) ")
+//    int addApp(App app);
+    @Select("call addApp(#{app_name},#{app_type},#{app_introduction},#{app_web},#{app_notice},#{edition},#{developers},@oid)")
     int addApp(App app);
-
 }
 
 
