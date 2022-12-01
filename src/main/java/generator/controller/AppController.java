@@ -60,7 +60,7 @@ public class AppController {
         List<App> appList = appService.findByType(appType);
         return Res.success("query successfully",appList);
     }
-    @GetMapping("findByID")
+    @RequestMapping("findByID")
     public Object findByID(int app_id){
         return Res.success("query successfully",appService.findById(app_id));
     }
@@ -93,7 +93,7 @@ public class AppController {
         fis.close();
         return "success";
     }
-    @GetMapping("uploadIcon")
+    @RequestMapping("uploadIcon")
     public Res uploadIcon (@RequestParam("appIcon") MultipartFile fileUpload,int appId) throws Exception{
         String fileName = "appIcon("+appId+").png";
         String tmpFilePath = CONSTANT.app_icon_path;
