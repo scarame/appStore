@@ -214,7 +214,7 @@ public class AppController {
             case 2: s=appSize+"MB";break;
             default: s=appSize+"GB";
         }
-        appService.uploadApp(appId,"'"+s+"'",edition,fileUpload.getOriginalFilename());
+        appService.uploadApp(appId,"'"+s+"'",edition,fileName);
         return Res.success("success");
     }
     @PostMapping("addApp")

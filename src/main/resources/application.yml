@@ -5,6 +5,10 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+#  http:
+#    multipart:
+#      max-file-size: 10240MB
+#      max-request-size: 10240MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/app_store?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
