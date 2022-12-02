@@ -95,12 +95,12 @@ public class AppController {
     }
     @RequestMapping("uploadIcon")
     public Res uploadIcon (@RequestParam("appIcon") MultipartFile fileUpload,int appId) throws Exception{
-        String fileName = "appIcon("+appId+").png";
+        String fileName = "appIcon("+appId+")";
         String tmpFilePath = CONSTANT.app_icon_path;
-        String resourcesPath = tmpFilePath + "//" + fileName;
+        String resourcesPath = tmpFilePath + "//" + fileName+".png";
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
-        appService.uploadAppIcon(("appIcon_"+appId),appId);
+        appService.uploadAppIcon(fileName,appId);
         return Res.success("upload successfully");
     }
     //========================================img =================================
