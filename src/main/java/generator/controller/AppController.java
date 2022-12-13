@@ -175,7 +175,6 @@ public class AppController {
         //设置文件下载方式
         response.setHeader("content-disposition","attachment;filename="+URLEncoder.encode(fileName,"utf-8"));
         ServletOutputStream outputStream = response.getOutputStream(); //字节流
-
         //流数据交换，每次交换10k数据大小 （1024k = 1m）
         byte[] bytes = new byte[1024*10];
         int read;
@@ -183,7 +182,6 @@ public class AppController {
             read = fileInputStream.read(bytes);
             outputStream.write(bytes,0,read);
         }while (-1 != read);
-
         //关闭资源
         IOUtils.closeQuietly(fileInputStream);
         IOUtils.closeQuietly(outputStream);
@@ -194,13 +192,11 @@ public class AppController {
 
     @PostMapping("upload")
     public Res receiveFile(@RequestParam("package") MultipartFile fileUpload,int appId,String edition)throws IOException {
-
         if(appService.findById(appId)==null){ return Res.fail("nonexistent app");}
         String fileName=fileUpload.getOriginalFilename();
         String resourcesPath = CONSTANT.app_storage_path + "//" + fileName;
         File upFile = new File(resourcesPath);
         fileUpload.transferTo(upFile);
-
         String s;
         long appSize=fileUpload.getSize();
         int count=0;

@@ -10,9 +10,11 @@ import java.util.concurrent.TimeUnit;
 public class CONSTANT {
     //token私钥
     public final static String TOKEN_KEY=getAttribute("private_key");
-    //token过期时间单位 和 单位数
-    public final static int count=Integer.parseInt(getAttribute("time_count"));
+    //token时间单位（分）
     public final static TimeUnit C_TimeUnit=TimeUnit.MINUTES;
+    //时长
+    public final static int count=Integer.parseInt(getAttribute("time_count"));
+
     public final static String portrait_storage_path=getAttribute("portrait_storage_path");
     public final static String app_storage_path=getAttribute("app_storage_path");
     public final static String app_icon_path=getAttribute("app_icon_path");
