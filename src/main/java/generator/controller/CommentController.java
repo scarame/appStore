@@ -35,7 +35,6 @@ CommentController {
         String token=request.getHeader("token");
         comments.setUsername(JwtUtil.parseJWT(token).get("userName").toString());
         comments.setUserid((int)JwtUtil.parseJWT(token).get("id"));
-        comments.setScore_time(CONSTANT.getCurrentTime());
         commentService.saveComment(comments);
         return Res.success("评论成功",true);
 

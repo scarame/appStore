@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.CommentsMapper">
+
+    <resultMap id="BaseResultMap" type="generator.entity.Comments">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="appid" column="appId" jdbcType="INTEGER"/>
+            <result property="userid" column="userid" jdbcType="INTEGER"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="INTEGER"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="scoreTime" column="score_time" jdbcType="TIMESTAMP"/>
+            <result property="parentCommentId" column="parent_comment_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,appId,userid,
+        username,score,content,
+        score_time,parent_comment_id
+    </sql>
+</mapper>
